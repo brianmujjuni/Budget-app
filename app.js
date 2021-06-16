@@ -12,6 +12,14 @@ let budgetController =(()=>{
     this.value = value;
 };
 
+let calculateTotal = function(type){
+    let sum = 0;
+    data.allItems[type].forEach((cur)=>{
+        sum +=  cur.value;
+    });
+    data.totals[type]=sum;
+};
+
 let data ={
     allItems:{
         exp:[],
@@ -20,7 +28,9 @@ let data ={
     totals:{
        exp: 0,
        inc: 0 
-    }
+    },
+    budget: 0,
+    percentage: -1
     
 };
 
@@ -51,6 +61,33 @@ return{
         return newItem;
        
     },
+    calculateBudget: ()=>{
+
+        //Calculate total income and expenses
+        calculateTotal('exp');
+        calculateTotal('inc');
+        //Calculate budget: icome - expenses
+        data.budget  = data.totals.inc - data.totals.exp;
+        // Calcualte the percentage of income that we spent
+        
+        if(data.totals.inc > 0){
+            data.percentage =Math.round((data.totals.exp / data.totals.inc) * 100);
+        }else{
+           data.percentage = -1; 
+        }
+    },
+    getBudget: ()=>{
+        return{
+            budget: data.budget,
+            totalInc: data.totals.inc,
+            totalExp: data.totals.exp,
+            percentage: data.percentage
+
+        } 
+
+
+    },
+    
     testing: ()=>{
         console.log(data)
     }
@@ -139,10 +176,11 @@ let controller=((budgetCtrl,UICtrl) => {
     };
     let updateBudget =()=>{
         //Calculate the budget
-
+        budgetCtrl.calculateBudget();
         //return the budget
-
+        let budget = budgetCtrl.getBudget();
         //Dispaly the budget on the UI
+        console.log(budget)
 
     };
 
