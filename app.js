@@ -71,7 +71,8 @@ let UIController =(()=>{
         inputValue: '.add__value',
         inputBtn: '.add__btn',
         incomeContainer: '.income__list',
-        expensesContainer: '.expenses__list'
+        expensesContainer: '.expenses__list',
+        container: '.container'
     };
 
     return{
@@ -80,7 +81,7 @@ let UIController =(()=>{
                 //Will be either increment or expense
              type : document.querySelector(DOMstrings.inputType).value,
              description : document.querySelector(DOMstrings.inputDescription).value,
-             value : document.querySelector(DOMstrings.inputValue).value
+             value : parseFloat(document.querySelector(DOMstrings.inputValue).value)
 
             };
                      
@@ -133,24 +134,35 @@ let controller=((budgetCtrl,UICtrl) => {
             }
         });
 
+        document.querySelector(DOM.container).addEventListener('click',ctrlDeleteItem);
+
+    };
+    let updateBudget =()=>{
+        //Calculate the budget
+
+        //return the budget
+
+        //Dispaly the budget on the UI
+
     };
 
     let ctrlAddItem =()=>{
         let newItem,input;
     //Get the field input data
          input = UICtrl.getinput();
+         if(input.description !== "" && !isNan(input.value) && input.value >0){
+         //Add the item to the budget controller
+            newItem = budgetCtrl.addItem(input.type,input.description,input.value)
+        //Add the item to the UI
+          UICtrl.addListItem(newItem,input.type)
+        //Clear the Fields
+          UICtrl.clearFields();    
+  
+        //calculate and update budget
+         updateBudget();
+         }
         
-    //Add the item to the budget controller
-       newItem = budgetCtrl.addItem(input.type,input.description,input.value)
-     //Add the item to the UI
-        UICtrl.addListItem(newItem,input.type)
-    //Clear the Fields
-    UICtrl.clearFields();    
 
-    //Calculate the budget
-
-    //Dispaly the budget on the UI
-       
     };
     
     return{
