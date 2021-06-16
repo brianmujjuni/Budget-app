@@ -105,6 +105,16 @@ let UIController =(()=>{
             document.querySelector(element).insertAdjacentHTML('beforeend',newHtml)
         },
 
+        clearFields:()=>{
+            let fields,fieldsArr;
+           fields = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
+           fieldsArr = Array.prototype.slice.call(fields);
+           fieldsArr.forEach((current,index,array) => {
+               current.value = "";
+           });
+           fieldsArr[0].focus();
+        },
+
         getDOMstrings: ()=>{
             return DOMstrings;
         }
@@ -134,12 +144,15 @@ let controller=((budgetCtrl,UICtrl) => {
        newItem = budgetCtrl.addItem(input.type,input.description,input.value)
      //Add the item to the UI
         UICtrl.addListItem(newItem,input.type)
+    //Clear the Fields
+    UICtrl.clearFields();    
+
     //Calculate the budget
 
     //Dispaly the budget on the UI
        
     };
-
+    
     return{
         init:()=>{
           setupEvenListeners();
